@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 import random
-
+# --- just the test ---
 # --- CONFIGURATION DE LA PAGE ---
 st.set_page_config(page_title="LearnIA - Apprentissage Adaptatif", page_icon="🧠", layout="wide")
 
