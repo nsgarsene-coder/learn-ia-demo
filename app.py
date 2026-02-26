@@ -3,7 +3,7 @@ import time
 import random
 # --- just the test ---
 # --- CONFIGURATION DE LA PAGE ---
-st.set_page_config(page_title="LearnIA - Apprentissage Adaptatif", page_icon="🧠", layout="wide")
+st.set_page_config(page_title="LearnIA - Apprentissage Adaptatif", page_icon="asset_s\icons8-cerveau-64.png", layout="wide")
 
 # --- SIMULATION BACKEND (Pas de vraie BDD pour la démo rapide) ---
 if 'xp' not in st.session_state:
@@ -27,7 +27,8 @@ def generate_quiz():
     ]
 
 # --- INTERFACE UTILISATEUR (SIDEBAR) ---
-st.sidebar.title("👤 Profil Apprenant")
+st.sidebar.image("asset_s\icons8-étudiant-femme-50.png ", width=60)
+st.sidebar.title("Profil Apprenant")
 name = st.sidebar.text_input("Ton Prénom", "Thomas")
 style = st.sidebar.selectbox("Ton style d'apprentissage", ["Visuel (Schémas)", "Auditif (Podcast)", "Kinesthésique (Pratique)"])
 mode = st.sidebar.radio("Mode", ["Révision Express", "Apprentissage Profond"])
@@ -38,7 +39,8 @@ st.sidebar.progress(st.session_state.xp % 100)
 st.sidebar.caption(f"XP Total: {st.session_state.xp}")
 
 # --- PAGE PRINCIPALE ---
-st.title("🧠 LearnIA")
+st.image("asset_s\icons8-cerveau-64.png", width=80)
+st.title("LearnIA")
 st.markdown(f"Bonjour **{name}** ! Prêt à transformer tes cours ?")
 
 # ÉTAPE 1 : INGESTION
@@ -46,46 +48,58 @@ st.header("1. Importe ton cours")
 course_input = st.text_area("Colle ton cours ici (ou le texte de tes notes)", height=150, placeholder="La photosynthèse est le processus par lequel...")
 uploaded_file = st.file_uploader("Ou upload une image/PDF", type=['png', 'jpg', 'pdf'])
 
-if st.button("🚀 Lancer la Transformation IA"):
+rocket_slot = st.empty()  # slot vide pour afficher le GIF
+
+if st.button("Lancer la Transformation IA"):
     if course_input:
+        # affichage de la fusée animée
+        rocket_slot.image("asset_s\icons8-fusée.gif", width=100)
+        
         with st.spinner('Analyse sémantique en cours...'):
-            # Simulation de l'IA
             summary = analyze_course(course_input, style)
             st.success("Transformation terminée !")
-            
-            # ÉTAPE 2 : RÉSULTAT ADAPTATIF
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.subheader("📄 Résumé Structuré")
-                st.info(summary)
-                if style == "Visuel (Schémas)":
-                    st.image("https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1000&auto=format&fit=crop", caption="MindMap Générée par IA")
-                elif style == "Auditif (Podcast)":
-                    st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", format='audio/mp3')
-                    st.caption("Podcast généré : 'Le Prof Cool'")
-            
-            with col2:
-                st.subheader("🎮 Quiz de validation")
-                quiz = generate_quiz()
-                for i, q in enumerate(quiz):
-                    st.write(f"**Question {i+1}:** {q['q']}")
-                    user_rep = st.radio(f"Choix {i+1}", q['options'], key=i)
-                
-                if st.button("Valider le Quiz"):
-                    st.balloons()
-                    st.session_state.xp += 50
-                    st.success("Bravo ! +50 XP gagnés !")
+        
+        rocket_slot.empty()
 
-            # ÉTAPE 3 : FEEDBACK ORAL
-            st.markdown("---")
-            st.subheader("🎤 Mode Professeur (Feedback)")
-            st.write("Explique ce que tu as compris à l'oral, l'IA va te corriger.")
-            if st.button("🎙️ Enregistrer ma réponse"):
-                with st.spinner("Écoute en cours..."):
-                    time.sleep(2)
-                    st.warning("IA : 'C'est pas mal ! Tu as bien compris le début, mais tu as oublié de préciser le contexte historique.'")
-                    st.metric("Ta note", "7/10")
+        # --- ÉTAPE 2 : RÉSULTAT ADAPTATIF ---
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader("Résumé Structuré")
+            st.info(summary)
+            if style == "Visuel (Schémas)":
+                st.image(
+                    "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1000&auto=format&fit=crop",
+                    caption="MindMap Générée par IA"
+                )
+            elif style == "Auditif (Podcast)":
+                st.audio(
+                    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    format='audio/mp3'
+                )
+                st.caption("Podcast généré : 'Le Prof Cool'")
+
+        with col2:
+            st.subheader("Quiz de validation")
+            quiz = generate_quiz()
+            for i, q in enumerate(quiz):
+                st.write(f"**Question {i+1}:** {q['q']}")
+                user_rep = st.radio(f"Choix {i+1}", q['options'], key=i)
+
+            if st.button("Valider le Quiz"):
+                st.balloons()
+                st.session_state.xp += 50
+                st.success("Bravo ! +50 XP gagnés !")
+
+        # --- ÉTAPE 3 : FEEDBACK ORAL ---
+        st.markdown("---")
+        st.subheader("Mode Professeur (Feedback)")
+        st.write("Explique ce que tu as compris à l'oral, l'IA va te corriger.")
+        if st.button("Enregistrer ma réponse"):
+            with st.spinner("Écoute en cours..."):
+                time.sleep(2)
+                st.warning("IA : 'C'est pas mal ! Tu as bien compris le début, mais tu as oublié de préciser le contexte historique.'")
+                st.metric("Ta note", "7/10")
 
     else:
-        st.error("Merci d'entrer du texte pour commencer.")
+        st.error("Merci d'entrer du texte pour commencer.") 
