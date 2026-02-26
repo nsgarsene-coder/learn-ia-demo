@@ -48,7 +48,7 @@ def generate_quiz(text):
     ]
 
 # --- INTERFACE UTILISATEUR (SIDEBAR) ---
-st.sidebar.image("asset_s/icons8-etudiant-femme-50.png", width=60)
+st.sidebar.image("asset_s/icons8-étudiant-femme-50.png", width=60)
 st.sidebar.title("Profil Apprenant")
 name = st.sidebar.text_input("Ton Prenom", "Thomas")
 style = st.sidebar.selectbox("Ton style d'apprentissage", ["Visuel (Schemas)", "Auditif (Podcast)", "Kinesthesique (Pratique)"])
@@ -78,7 +78,7 @@ rocket_slot = st.empty()
 
 if st.button("Lancer la Transformation IA"):
     if course_input:
-        rocket_slot.image("asset_s/icons8-fusee.gif", width=100)
+        rocket_slot.image("asset_s/icons8-fusée.gif", width=100)
         
         with st.spinner('Analyse semantique en cours...'):
             summary = analyze_course(course_input, style)
