@@ -1,11 +1,27 @@
 import streamlit as st
 import time
-import random
-# --- just the test ---
+import random 
+import sys
+from pathlib import Path
 # --- CONFIGURATION DE LA PAGE ---
 st.set_page_config(page_title="LearnIA - Apprentissage Adaptatif", page_icon="asset_s\icons8-cerveau-64.png", layout="wide")
+sys.path.insert(0, str(Path(__file__).parent / "styles"))
+try:
+    from learnia_dynamic_colors import initialize_dark_theme, apply_dynamic_theme
+    # On n'appelle pas initialize_dark_theme ici car on garde le st.set_page_config original de l'utilisateur
+except ImportError:
+    def apply_dynamic_theme(mode): pass
 
-# --- SIMULATION BACKEND (Pas de vraie BDD pour la démo rapide) ---
+# --- CONFIGURATION DE LA PAGE (Structure Originale V4) ---
+st.set_page_config(page_title="LearnIA - Apprentissage Adaptatif", page_icon="asset_s/icons8-cerveau-64.png", layout="wide")
+
+# --- INJECTION CSS (Thème Sombre & Améliorations) ---
+try:
+    with open("styles/learnia_custom_styles.css", "r", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+except FileNotFoundError:
+    pass
+# --- SIMULATION BACKEND 
 if 'xp' not in st.session_state:
     st.session_state.xp = 120
 if 'level' not in st.session_state:
